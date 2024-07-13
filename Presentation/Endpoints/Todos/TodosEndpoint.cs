@@ -1,4 +1,5 @@
 ﻿using Carter;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TodolistBackend;
 
@@ -11,9 +12,9 @@ public class TodosEndpoint : ICarterModule
         mapper.MapPost("create",CreateTodo);
     }
 
-    private async Task CreateTodo(AddTodoRequest addTodo )
+    private async Task CreateTodo(AddTodoRequest addTodo,[FromServices] ITodoService todoService )
     {
-         var todo = await Task.FromResult("");
+        await todoService.Create(new(addTodo.Title,addTodo.Description,false));
     }
 
     private async Task<List<ReadTodoResponse>> GetAllTodos()
